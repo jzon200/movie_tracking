@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_tracking/models/tab_provider.dart';
+import 'package:movie_tracking/screens/movie_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/main_screen.dart';
@@ -14,14 +15,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => TabProvider()),
-        ],
-        child: const MainScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TabProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.dark(),
+        home: const MainScreen(),
+        routes: {
+          MovieDetailsScreen.routeName: (context) => const MovieDetailsScreen(),
+        },
       ),
     );
   }
