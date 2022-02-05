@@ -21,11 +21,9 @@ class MovieCard extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: 263),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(movie.imageUrl),
+            image: NetworkImage(movie.imageUrl!),
             fit: BoxFit.cover,
-            alignment: (movie.id == 'm2' || movie.id == 'm6')
-                ? const Alignment(0.0, -0.75)
-                : Alignment.center,
+            alignment: Alignment.center,
           ),
         ),
         child: BackgroundGradient(
@@ -41,7 +39,7 @@ class MovieCard extends StatelessWidget {
                 const SizedBox(height: 24),
                 FittedBox(
                   child: Text(
-                    movie.title,
+                    movie.title!,
                     style: Theme.of(context).textTheme.headline2,
                   ),
                 ),
@@ -54,12 +52,12 @@ class MovieCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '${(movie.duration / 60).floor()}h ${movie.duration % 60}min',
+                      '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      movie.director,
+                      movie.director!,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const SizedBox(width: 12),
@@ -68,8 +66,8 @@ class MovieCard extends StatelessWidget {
                 // const SizedBox(height: 30),
                 Wrap(
                   spacing: 8.0,
-                  children: movie.genres.map((data) {
-                    return movie.genres.indexOf(data) >= 3
+                  children: movie.genres!.map((data) {
+                    return movie.genres!.indexOf(data) >= 3
                         ? const SizedBox.shrink()
                         : Container(
                             padding: const EdgeInsets.symmetric(
@@ -104,7 +102,7 @@ class MovieCard extends StatelessWidget {
                         itemCount: 5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (_, index) {
-                          final rating = (movie.rating / 2);
+                          final rating = (movie.rating! / 2);
                           return Icon(
                             Icons.star,
                             color: (rating.toInt() > index)

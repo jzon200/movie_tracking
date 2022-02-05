@@ -1,20 +1,40 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:movie_tracking/data/hive/hive_db.dart';
+import 'package:movie_tracking/data/hive/hive_repository.dart';
+import '../data/movies_repository.dart';
+import '../data/watchlist_repository.dart';
+import 'package:provider/provider.dart';
 import '../ui/app_theme.dart';
 import '../ui/widgets/movie_card.dart';
 
 import '../models/movie.dart';
 import '../ui/widgets/background_gradient.dart';
 
-class MovieDetailsScreen extends StatelessWidget {
+class MovieDetailsScreen extends StatefulWidget {
   static const routeName = '/movie-details';
   const MovieDetailsScreen({Key? key}) : super(key: key);
 
   @override
+  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
+}
+
+class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  // @override
+  // void dispose() {
+  //   Hive.close();
+  //   super.dispose();
+  // }
+
+  @override
   Widget build(BuildContext context) {
+    final repository = Provider.of<WatchlistRepository>(context, listen: false);
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
-    final movies =
-        Movie.movieInfo.where((element) => movie.id != element.id).toList();
-    movies.shuffle();
+    final box = Hive.box<HiveMovie>('movies');
+    // final movies =
+    //     Movie.movieInfo.where((element) => movie.id != element.id).toList();
+    // movies.shuffle();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -30,7 +50,7 @@ class MovieDetailsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         isAntiAlias: true,
-                        image: NetworkImage(movie.imageUrl),
+                        image: NetworkImage(movie.imageUrl!),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -95,7 +115,7 @@ class MovieDetailsScreen extends StatelessWidget {
                               child: Stack(
                                 children: [
                                   Text(
-                                    movie.synopsis,
+                                    movie.overview!,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -194,7 +214,7 @@ class MovieDetailsScreen extends StatelessWidget {
                                         margin: const EdgeInsets.only(left: 8),
                                         child: Icon(
                                           Icons.star,
-                                          color: (movie.rating.toInt() > index)
+                                          color: (movie.rating!.toInt() > index)
                                               ? const Color(0xFF89E045)
                                               : Colors.grey,
                                           size: 20,
@@ -237,7 +257,8 @@ class MovieDetailsScreen extends StatelessWidget {
                                                     right: 8),
                                                 child: Icon(
                                                   Icons.star,
-                                                  color: (movie.rating.toInt() >
+                                                  color: (movie.rating!
+                                                              .toInt() >
                                                           index)
                                                       ? const Color(0xFF89E045)
                                                       : Colors.grey,
@@ -266,97 +287,105 @@ class MovieDetailsScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: SizedBox(
-                                    height: 206,
-                                    child: ListView.separated(
-                                      itemCount: movies.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (_, index) {
-                                        final item = movies[index];
-                                        return GestureDetector(
-                                          onTap: () => Navigator.of(context)
-                                              .pushReplacementNamed(
-                                            routeName,
-                                            arguments: item,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(6.4),
-                                            child: Container(
-                                              constraints: const BoxConstraints(
-                                                minWidth: 324,
+                                      height: 206,
+                                      child: Consumer<MoviesRepository>(
+                                          builder: (_, repository, child) {
+                                        final movies = repository
+                                            .findMovies()
+                                            .where((element) =>
+                                                element.id != movie.id)
+                                            .toList();
+                                        // movies.shuffle();
+                                        return ListView.separated(
+                                          itemCount: movies.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (_, index) {
+                                            final item = movies[index];
+                                            return GestureDetector(
+                                              onTap: () => Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                MovieDetailsScreen.routeName,
+                                                arguments: item,
                                               ),
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image:
-                                                      AssetImage(item.imageUrl),
-                                                  fit: BoxFit.cover,
-                                                  alignment: (item.id == 'm2' ||
-                                                          item.id == 'm6')
-                                                      ? const Alignment(
-                                                          0.0, -0.75)
-                                                      : Alignment.center,
-                                                ),
-                                              ),
-                                              child: BackgroundGradient(
-                                                height: 200,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 12.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const SizedBox(
-                                                          height: 62),
-                                                      Text(
-                                                        item.title,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline2!
-                                                            .copyWith(
-                                                              fontSize: 20,
-                                                            ),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 12),
-                                                      Row(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.4),
+                                                child: Container(
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                    minWidth: 324,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          item.imageUrl!),
+                                                      fit: BoxFit.cover,
+                                                      alignment:
+                                                          Alignment.center,
+                                                    ),
+                                                  ),
+                                                  child: BackgroundGradient(
+                                                    height: 200,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 12.0),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
+                                                          const SizedBox(
+                                                              height: 62),
                                                           Text(
-                                                            item.year
-                                                                .toString(),
+                                                            item.title!,
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText2,
+                                                                .headline2!
+                                                                .copyWith(
+                                                                  fontSize: 20,
+                                                                ),
                                                           ),
                                                           const SizedBox(
-                                                              width: 12),
-                                                          Text(
-                                                            '${(movie.duration / 60).floor()}h ${movie.duration % 60}min',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText2,
+                                                              height: 12),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                item.year
+                                                                    .toString(),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText2,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 12),
+                                                              Text(
+                                                                item.duration
+                                                                    .toString(),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText2,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 12),
+                                                              Text(
+                                                                item.director!,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText2,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 12),
+                                                            ],
                                                           ),
-                                                          const SizedBox(
-                                                              width: 12),
-                                                          Text(
-                                                            item.director,
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText2,
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 12),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: item.genres
-                                                            .map(
-                                                                (data) =>
+                                                          Row(
+                                                            children: item
+                                                                .genres!
+                                                                .map((data) =>
                                                                     Container(
                                                                       margin: const EdgeInsets
                                                                           .only(
@@ -390,68 +419,71 @@ class MovieDetailsScreen extends StatelessWidget {
                                                                             .copyWith(fontSize: 10),
                                                                       ),
                                                                     ))
-                                                            .toList(),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 12),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            '${item.rating}',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .headline1!
-                                                                .copyWith(
-                                                                  fontSize: 24,
-                                                                ),
+                                                                .toList(),
                                                           ),
                                                           const SizedBox(
-                                                              width: 6),
-                                                          SizedBox(
-                                                            height: 20,
-                                                            child: ListView
-                                                                .separated(
-                                                              primary: false,
-                                                              physics:
-                                                                  const NeverScrollableScrollPhysics(),
-                                                              shrinkWrap: true,
-                                                              itemCount: 5,
-                                                              scrollDirection:
-                                                                  Axis.horizontal,
-                                                              itemBuilder:
-                                                                  (_, index) =>
-                                                                      Icon(
-                                                                Icons.star,
-                                                                color: (item.rating
-                                                                            .toInt() >
-                                                                        index)
-                                                                    ? const Color(
-                                                                        0xFF89E045)
-                                                                    : Colors
-                                                                        .grey,
-                                                                size: 20,
+                                                              height: 12),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                '${item.rating}',
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .headline1!
+                                                                    .copyWith(
+                                                                      fontSize:
+                                                                          24,
+                                                                    ),
                                                               ),
-                                                              separatorBuilder: (_,
-                                                                      __) =>
-                                                                  const SizedBox(
-                                                                      width: 8),
-                                                            ),
+                                                              const SizedBox(
+                                                                  width: 6),
+                                                              SizedBox(
+                                                                height: 20,
+                                                                child: ListView
+                                                                    .separated(
+                                                                  primary:
+                                                                      false,
+                                                                  physics:
+                                                                      const NeverScrollableScrollPhysics(),
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  itemCount: 5,
+                                                                  scrollDirection:
+                                                                      Axis.horizontal,
+                                                                  itemBuilder:
+                                                                      (_, index) =>
+                                                                          Icon(
+                                                                    Icons.star,
+                                                                    color: (item.rating!.toInt() >
+                                                                            index)
+                                                                        ? const Color(
+                                                                            0xFF89E045)
+                                                                        : Colors
+                                                                            .grey,
+                                                                    size: 20,
+                                                                  ),
+                                                                  separatorBuilder: (_,
+                                                                          __) =>
+                                                                      const SizedBox(
+                                                                          width:
+                                                                              8),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
+                                            );
+                                          },
+                                          separatorBuilder: (_, index) =>
+                                              const SizedBox(width: 16),
                                         );
-                                      },
-                                      separatorBuilder: (_, index) =>
-                                          const SizedBox(width: 16),
-                                    ),
-                                  ),
+                                      })),
                                 ),
                               ],
                             ),
@@ -460,22 +492,46 @@ class MovieDetailsScreen extends StatelessWidget {
                             Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  final hiveMovie = HiveMovie(
+                                    id: movie.id,
+                                    title: movie.title,
+                                    overview: movie.overview,
+                                    imageUrl: movie.imageUrl,
+                                    director: movie.director,
+                                    duration: movie.duration,
+                                    rating: movie.rating,
+                                    year: movie.year,
+                                    genres: movie.genres,
+                                  );
+                                  box.containsKey(movie.id)
+                                      ? box.delete(hiveMovie.id)
+                                      : box.put(hiveMovie.id, hiveMovie);
+                                  setState(() {
+                                    movie.isWatchlist = !movie.isWatchlist;
+                                  });
+                                },
                                 child: Ink(
                                   height: 62,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
-                                    color: Colors.red,
+                                    color: !box.containsKey(movie.id)
+                                        ? Colors.red
+                                        : Colors.green,
                                   ),
                                   child: Center(
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const Icon(Icons.bookmarks),
+                                        Icon(!box.containsKey(movie.id)
+                                            ? Icons.bookmarks
+                                            : Icons.remove_red_eye),
                                         const SizedBox(width: 24),
                                         Text(
-                                          'Add To Watchlist',
+                                          !box.containsKey(movie.id)
+                                              ? 'Add To Watchlist'
+                                              : 'Mark Watched',
                                           style: Theme.of(context)
                                               .textTheme
                                               .button,
@@ -485,7 +541,7 @@ class MovieDetailsScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -501,7 +557,7 @@ class MovieDetailsScreen extends StatelessWidget {
                     width: 157,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(movie.imageUrl),
+                        image: NetworkImage(movie.imageUrl!),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -534,7 +590,7 @@ class MovieDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          movie.title,
+                          movie.title!,
                           style:
                               Theme.of(context).textTheme.headline2!.copyWith(
                                     color: Colors.black,
@@ -554,7 +610,7 @@ class MovieDetailsScreen extends StatelessWidget {
                             ),
                             // const SizedBox(width: 16),
                             Text(
-                              movie.duration.toString(),
+                              '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!
@@ -562,7 +618,7 @@ class MovieDetailsScreen extends StatelessWidget {
                             ),
                             // const SizedBox(width: 16),
                             Text(
-                              movie.director,
+                              movie.director!,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!
@@ -573,8 +629,8 @@ class MovieDetailsScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         FittedBox(
                           child: Row(
-                            children: movie.genres.map((data) {
-                              return movie.genres.indexOf(data) >= 3
+                            children: movie.genres!.map((data) {
+                              return movie.genres!.indexOf(data) >= 3
                                   ? const SizedBox.shrink()
                                   : Container(
                                       margin: const EdgeInsets.only(right: 8),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tracking/network/movie_api.dart';
 import '../models/tab_provider.dart';
 import 'top_rated_screen.dart';
 import 'trending_screen.dart';
@@ -19,41 +18,6 @@ class _MainScreenState extends State<MainScreen> {
     TopRatedScreen(),
     WatchListScreen(),
   ];
-
-  // bool isLoading = true;
-  // // late List movieDetails;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getPopularMovies();
-  // }
-
-  // Future<void> getDetails() async {
-  //   final movieDetails = await MovieApi.getDetails();
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  //   print(movieDetails);
-  // }
-
-  // Future<void> getPopularMovies() async {
-  //   final popularMovies = await MovieApi.getPopularMovies();
-  //   final details = await MovieApi.getDetails(popularMovies[0].title);
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  //   print(popularMovies);
-  //   print(details);
-  // }
-
-  // Future<void> getImages() async {
-  //   final images = await MovieApi.getImages();
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  //   print(images);
-  // }
 
   @override
   Widget build(BuildContext context) {
