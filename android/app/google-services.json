@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1095077773087",
+    "project_id": "cinematics-3be34",
+    "storage_bucket": "cinematics-3be34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095077773087:android:8932506accca284570ba2a",
+        "android_client_info": {
+          "package_name": "com.example.movie_tracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095077773087-g3ncm9gm2q2sgeq37a047bblr41siqc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcqH9rQcPomy1U0N1LBH3GtCWIsUkzXfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095077773087-g3ncm9gm2q2sgeq37a047bblr41siqc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

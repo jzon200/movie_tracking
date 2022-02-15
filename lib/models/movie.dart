@@ -1,54 +1,130 @@
-import 'package:equatable/equatable.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:movie_tracking/data/cloud_firestore/firestore_movie.dart';
+import 'package:movie_tracking/data/hive/hive_db.dart';
+import 'user_ratings.dart';
 
-class Movie extends Equatable {
+import 'cast.dart';
+
+class Movie {
   final String? id;
   final String? title;
   final String? overview;
   final String? imageUrl;
-  final String? director;
   final int? duration;
   final double? rating;
   final int? year;
-  final List? genres;
+  final List<String>? genres;
+  String? director;
+  List<String?>? actorsProfile;
+  List<Cast>? cast;
   bool isWatchlist;
+  String? reference;
 
   Movie({
-    required this.id,
-    required this.title,
-    required this.imageUrl,
-    this.overview = '',
-    this.director = 'Edzon Bausa',
-    this.duration = 0,
-    required this.rating,
-    this.year = 2019,
-    required this.genres,
+    this.id,
+    this.title,
+    this.imageUrl,
+    this.overview,
+    this.director,
+    this.duration,
+    this.rating,
+    this.year,
+    this.genres,
+    this.actorsProfile,
     this.isWatchlist = false,
+    this.reference,
   });
 
   @override
-  List<Object?> get props => [
-        title,
-        imageUrl,
-        overview,
-        director,
-        duration,
-        rating,
-        year,
-        genres,
-        isWatchlist
-      ];
+  String toString() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'imageUrl': imageUrl,
+      'director': director,
+      'duration': duration,
+      'rating': rating,
+      'year': year,
+      'genres': genres,
+      'cast': cast,
+    }.toString();
+  }
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      id: json['id'] as String,
-      title: json['title']['title'] as String,
-      overview: json['plotOutline']['text'] as String,
-      imageUrl: json['title']['image']['url'] as String,
-      duration: json['title']['runningTimeInMinutes'] as int,
-      rating: json['ratings']['rating'] ?? 0.0,
-      year: json['title']['year'] as int,
-      genres: json['genres'] as List,
+      id: json['id'],
+      title: json['title']['title'],
+      overview: json['plotOutline']['text'],
+      imageUrl: json['title']['image']['url'],
+      duration: json['title']['runningTimeInMinutes'],
+      rating: json['ratings']['rating'],
+      year: json['title']['year'],
+      genres: json['genres'].cast<String>(),
     );
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'imageUrl': imageUrl,
+      'duration': duration,
+      'rating': rating,
+      'year': year,
+      'genres': genres,
+      'director': director,
+      'isWatchlist': isWatchlist,
+      'actorsProfile': actorsProfile,
+      // 'cast': cast,
+    };
+  }
+
+  FirestoreMovie toFirestore() {
+    return FirestoreMovie(
+      id: id,
+      title: title,
+      overview: overview,
+      imageUrl: imageUrl,
+      duration: duration,
+      rating: rating,
+      year: year,
+      genres: genres,
+      director: director,
+      isWatchlist: isWatchlist,
+      actorsProfile: actorsProfile,
+      // cast: cast,
+    );
+  }
+
+  factory Movie.fromHive(HiveMovie movie) {
+    return Movie(
+      id: movie.id,
+      title: movie.title,
+      overview: movie.overview,
+      imageUrl: movie.imageUrl,
+      director: movie.director,
+      duration: movie.duration,
+      rating: movie.rating,
+      year: movie.year,
+      // genres: movie.genres!.take(3).toList(),
+      // isWatchlist: movie.isWatchlist,
+    );
+  }
+
+  String getRating(double? rating) {
+    if (rating == null) {
+      return 'No ratings yet';
+    }
+    return rating.toString();
+  }
+
+  String getDirector(String? director) {
+    if (director == null) {
+      return 'N/A';
+    }
+    return director;
   }
 
   static List<Movie> movieInfo = [

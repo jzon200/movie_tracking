@@ -1,0 +1,23 @@
+{
+    "@type":"imdb.api.name.bio"
+    "disambiguation":"X"
+    "id":"/name/nm4043618/"
+    "image":{ 
+    "height":5472
+    "id":"/name/nm4043618/images/rm662558465"
+    "url":"https://m.media-amazon.com/images/M/MV5BNzZiNTEyNTItYjNhMS00YjI2LWIwMWQtZmYwYTRlNjMyZTJjXkEyXkFqcGdeQXVyMTExNzQzMDE0._V1_.jpg"
+    "width":3648
+    }
+    "legacyNameText":"Holland, Tom (X)"
+    "name":"Tom Holland"
+    "birthDate":"1996-06-01"
+    "birthPlace":"Kingston upon Thames, England, UK"
+    "gender":"male"
+    "heightCentimeters":173
+    "realName":"Thomas Stanley Holland"
+    "trademarks":[
+    "Mostly portrays inexperienced and enthusiastic kids",
+    "Solid American accent",
+    "Youthful face and voice",
+    ],
+}

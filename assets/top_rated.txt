@@ -1,0 +1,402 @@
+[100 items
+0:{2 items
+"id":"/title/tt0111161/"
+"chartRating":9.2
+}
+1:{2 items
+"id":"/title/tt0068646/"
+"chartRating":9.1
+}
+2:{2 items
+"id":"/title/tt0071562/"
+"chartRating":9
+}
+3:{2 items
+"id":"/title/tt0468569/"
+"chartRating":9
+}
+4:{2 items
+"id":"/title/tt0050083/"
+"chartRating":8.9
+}
+5:{2 items
+"id":"/title/tt0108052/"
+"chartRating":8.9
+}
+6:{2 items
+"id":"/title/tt0167260/"
+"chartRating":8.9
+}
+7:{2 items
+"id":"/title/tt0110912/"
+"chartRating":8.8
+}
+8:{2 items
+"id":"/title/tt0060196/"
+"chartRating":8.8
+}
+9:{2 items
+"id":"/title/tt0120737/"
+"chartRating":8.8
+}
+10:{2 items
+"id":"/title/tt0137523/"
+"chartRating":8.7
+}
+11:{2 items
+"id":"/title/tt0109830/"
+"chartRating":8.7
+}
+12:{2 items
+"id":"/title/tt1375666/"
+"chartRating":8.7
+}
+13:{2 items
+"id":"/title/tt0167261/"
+"chartRating":8.7
+}
+14:{2 items
+"id":"/title/tt0080684/"
+"chartRating":8.7
+}
+15:{2 items
+"id":"/title/tt0133093/"
+"chartRating":8.7
+}
+16:{2 items
+"id":"/title/tt0099685/"
+"chartRating":8.6
+}
+17:{2 items
+"id":"/title/tt0073486/"
+"chartRating":8.6
+}
+18:{2 items
+"id":"/title/tt0047478/"
+"chartRating":8.6
+}
+19:{2 items
+"id":"/title/tt0114369/"
+"chartRating":8.6
+}
+20:{2 items
+"id":"/title/tt0102926/"
+"chartRating":8.6
+}
+21:{2 items
+"id":"/title/tt0317248/"
+"chartRating":8.6
+}
+22:{2 items
+"id":"/title/tt0118799/"
+"chartRating":8.6
+}
+23:{2 items
+"id":"/title/tt0038650/"
+"chartRating":8.6
+}
+24:{2 items
+"id":"/title/tt0120815/"
+"chartRating":8.6
+}
+25:{2 items
+"id":"/title/tt10872600/"
+"chartRating":8.6
+}
+26:{2 items
+"id":"/title/tt0076759/"
+"chartRating":8.5
+}
+27:{2 items
+"id":"/title/tt0816692/"
+"chartRating":8.5
+}
+28:{2 items
+"id":"/title/tt0245429/"
+"chartRating":8.5
+}
+29:{2 items
+"id":"/title/tt0120689/"
+"chartRating":8.5
+}
+30:{2 items
+"id":"/title/tt6751668/"
+"chartRating":8.5
+}
+31:{2 items
+"id":"/title/tt0110413/"
+"chartRating":8.5
+}
+32:{2 items
+"id":"/title/tt0056058/"
+"chartRating":8.5
+}
+33:{2 items
+"id":"/title/tt0253474/"
+"chartRating":8.5
+}
+34:{2 items
+"id":"/title/tt0103064/"
+"chartRating":8.5
+}
+35:{2 items
+"id":"/title/tt0088763/"
+"chartRating":8.5
+}
+36:{2 items
+"id":"/title/tt0114814/"
+"chartRating":8.5
+}
+37:{2 items
+"id":"/title/tt0054215/"
+"chartRating":8.5
+}
+38:{2 items
+"id":"/title/tt0110357/"
+"chartRating":8.5
+}
+39:{2 items
+"id":"/title/tt0027977/"
+"chartRating":8.5
+}
+40:{2 items
+"id":"/title/tt0095327/"
+"chartRating":8.5
+}
+41:{2 items
+"id":"/title/tt0120586/"
+"chartRating":8.5
+}
+42:{2 items
+"id":"/title/tt2582802/"
+"chartRating":8.5
+}
+43:{2 items
+"id":"/title/tt0172495/"
+"chartRating":8.5
+}
+44:{2 items
+"id":"/title/tt0021749/"
+"chartRating":8.5
+}
+45:{2 items
+"id":"/title/tt0407887/"
+"chartRating":8.5
+}
+46:{2 items
+"id":"/title/tt1675434/"
+"chartRating":8.5
+}
+47:{2 items
+"id":"/title/tt0482571/"
+"chartRating":8.5
+}
+48:{2 items
+"id":"/title/tt0034583/"
+"chartRating":8.4
+}
+49:{2 items
+"id":"/title/tt0064116/"
+"chartRating":8.4
+}
+50:{2 items
+"id":"/title/tt0047396/"
+"chartRating":8.4
+}
+51:{2 items
+"id":"/title/tt0095765/"
+"chartRating":8.4
+}
+52:{2 items
+"id":"/title/tt0078748/"
+"chartRating":8.4
+}
+53:{2 items
+"id":"/title/tt0078788/"
+"chartRating":8.4
+}
+54:{2 items
+"id":"/title/tt0209144/"
+"chartRating":8.4
+}
+55:{2 items
+"id":"/title/tt0082971/"
+"chartRating":8.4
+}
+56:{2 items
+"id":"/title/tt0032553/"
+"chartRating":8.4
+}
+57:{2 items
+"id":"/title/tt1853728/"
+"chartRating":8.4
+}
+58:{2 items
+"id":"/title/tt0405094/"
+"chartRating":8.4
+}
+59:{2 items
+"id":"/title/tt0050825/"
+"chartRating":8.4
+}
+60:{2 items
+"id":"/title/tt0043014/"
+"chartRating":8.4
+}
+61:{2 items
+"id":"/title/tt0910970/"
+"chartRating":8.4
+}
+62:{2 items
+"id":"/title/tt4154756/"
+"chartRating":8.4
+}
+63:{2 items
+"id":"/title/tt0051201/"
+"chartRating":8.4
+}
+64:{2 items
+"id":"/title/tt4633694/"
+"chartRating":8.4
+}
+65:{2 items
+"id":"/title/tt0081505/"
+"chartRating":8.4
+}
+66:{2 items
+"id":"/title/tt0057012/"
+"chartRating":8.4
+}
+67:{2 items
+"id":"/title/tt0119698/"
+"chartRating":8.3
+}
+68:{2 items
+"id":"/title/tt0364569/"
+"chartRating":8.3
+}
+69:{2 items
+"id":"/title/tt7286456/"
+"chartRating":8.3
+}
+70:{2 items
+"id":"/title/tt5311514/"
+"chartRating":8.3
+}
+71:{2 items
+"id":"/title/tt2380307/"
+"chartRating":8.3
+}
+72:{2 items
+"id":"/title/tt1345836/"
+"chartRating":8.3
+}
+73:{2 items
+"id":"/title/tt0090605/"
+"chartRating":8.3
+}
+74:{2 items
+"id":"/title/tt0087843/"
+"chartRating":8.3
+}
+75:{2 items
+"id":"/title/tt4154796/"
+"chartRating":8.3
+}
+76:{2 items
+"id":"/title/tt8267604/"
+"chartRating":8.3
+}
+77:{2 items
+"id":"/title/tt0082096/"
+"chartRating":8.3
+}
+78:{2 items
+"id":"/title/tt0057565/"
+"chartRating":8.3
+}
+79:{2 items
+"id":"/title/tt1187043/"
+"chartRating":8.3
+}
+80:{2 items
+"id":"/title/tt0114709/"
+"chartRating":8.3
+}
+81:{2 items
+"id":"/title/tt0086879/"
+"chartRating":8.3
+}
+82:{2 items
+"id":"/title/tt0169547/"
+"chartRating":8.3
+}
+83:{2 items
+"id":"/title/tt0112573/"
+"chartRating":8.3
+}
+84:{2 items
+"id":"/title/tt0361748/"
+"chartRating":8.3
+}
+85:{2 items
+"id":"/title/tt0119217/"
+"chartRating":8.3
+}
+86:{2 items
+"id":"/title/tt8503618/"
+"chartRating":8.3
+}
+87:{2 items
+"id":"/title/tt0091251/"
+"chartRating":8.3
+}
+88:{2 items
+"id":"/title/tt0086190/"
+"chartRating":8.3
+}
+89:{2 items
+"id":"/title/tt0062622/"
+"chartRating":8.3
+}
+90:{2 items
+"id":"/title/tt0105236/"
+"chartRating":8.3
+}
+91:{2 items
+"id":"/title/tt0986264/"
+"chartRating":8.3
+}
+92:{2 items
+"id":"/title/tt0052357/"
+"chartRating":8.3
+}
+93:{2 items
+"id":"/title/tt0022100/"
+"chartRating":8.3
+}
+94:{2 items
+"id":"/title/tt2106476/"
+"chartRating":8.3
+}
+95:{2 items
+"id":"/title/tt0033467/"
+"chartRating":8.3
+}
+96:{2 items
+"id":"/title/tt0180093/"
+"chartRating":8.3
+}
+97:{2 items
+"id":"/title/tt0045152/"
+"chartRating":8.3
+}
+98:{2 items
+"id":"/title/tt0053125/"
+"chartRating":8.3
+}
+99:{2 items
+"id":"/title/tt0044741/"
+"chartRating":8.3
+}
+]

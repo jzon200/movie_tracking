@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_tracking/ui/app_theme.dart';
 import '../models/tab_provider.dart';
 import 'top_rated_screen.dart';
 import 'trending_screen.dart';
@@ -30,29 +31,34 @@ class _MainScreenState extends State<MainScreen> {
               children: _pages,
             ),
           ),
-          bottomNavigationBar: NavigationBar(
-            onDestinationSelected: tabProvider.goToTab,
-            selectedIndex: tabProvider.selectedIndex,
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.whatshot_outlined),
-                selectedIcon: Icon(Icons.whatshot),
-                label: 'Trending',
-                tooltip: '',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.local_activity_outlined),
-                selectedIcon: Icon(Icons.local_activity),
-                label: 'Top Rated',
-                tooltip: '',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.bookmarks_outlined),
-                selectedIcon: Icon(Icons.bookmarks),
-                label: 'Watchlist',
-                tooltip: '',
-              ),
-            ],
+          bottomNavigationBar: NavigationBarTheme(
+            data: Theme.of(context).navigationBarTheme,
+            child: NavigationBar(
+              onDestinationSelected: tabProvider.goToTab,
+              selectedIndex: tabProvider.selectedIndex,
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.whatshot_outlined,
+                  ),
+                  selectedIcon: Icon(Icons.whatshot),
+                  label: 'Trending',
+                  tooltip: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.local_activity_outlined),
+                  selectedIcon: Icon(Icons.local_activity),
+                  label: 'Top Rated',
+                  tooltip: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.bookmarks_outlined),
+                  selectedIcon: Icon(Icons.bookmarks),
+                  label: 'Watchlist',
+                  tooltip: '',
+                ),
+              ],
+            ),
           ),
           // bottomNavigationBar: BottomNavigationBar(
 

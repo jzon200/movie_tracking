@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_tracking/models/movie.dart';
-import 'movie_model.dart';
 
-const String apiKey = '0d47f470dfmsh5f67790683d6b16p1824f8jsna6b5b525b404';
+import '../models/cast.dart';
+import '../models/movie.dart';
+
+const String apiKey = '3699168e6emsh75b0c25459f56fap1f024bjsn54ddb5a2e809';
 const String apiHost = 'imdb8.p.rapidapi.com';
 
 class HttpService {
@@ -22,7 +21,6 @@ class HttpService {
       },
     );
     if (response.statusCode == 200) {
-      print(response.body);
       return response.body;
     } else {
       print(response.statusCode);
@@ -40,7 +38,7 @@ class HttpService {
     return Movie.fromJson(jsonDecode(data));
   }
 
-  Future<List<APIPopularMovies>> getPopularMovies() async {
+  Future<List<String>> getPopularMovies() async {
     const path = '/title/get-most-popular-movies';
     final uri = Uri.https(apiHost, path, {
       "homeCountry": "US",
@@ -48,14 +46,63 @@ class HttpService {
       "currentCountry": "US",
     });
     final data = await getData(uri);
-
-    return parseMovies(data);
-  }
-
-  List<APIPopularMovies> parseMovies(String responseBody) {
-    final parsed = jsonDecode(responseBody);
-    return parsed
-        .map<APIPopularMovies>((json) => APIPopularMovies.fromJson(json))
+    final parsedMovies = jsonDecode(data);
+    return parsedMovies
+        .take(5)
+        .map<String>((titleId) => titleId.toString())
         .toList();
   }
+
+  Future<List<String>> getTopMovies() async {
+    const path = '/title/get-top-rated-movies';
+    final uri = Uri.https(apiHost, path);
+    final data = await getData(uri);
+    final parsedMovies = jsonDecode(data);
+    return parsedMovies
+        .map<String>((titleId) => titleId.toString())
+        .take(5)
+        .toList();
+  }
+
+  Future<List<String>> getTopCast({required String tconst}) async {
+    const path = '/title/get-top-cast';
+    final uri = Uri.https(apiHost, path, {
+      'tconst': tconst.replaceAll('/title/', ''),
+    });
+    final data = await getData(uri);
+    final parsedMovies = jsonDecode(data);
+    return parsedMovies
+        .map<String>((movie) => movie.toString())
+        .take(5)
+        .toList();
+  }
+
+  Future<String?> getActorProfileUrl({required String nconst}) async {
+    const path = '/actors/get-bio';
+    final uri = Uri.https(apiHost, path, {
+      'nconst': nconst.replaceAll('/name/', ''),
+    });
+    final data = await getData(uri);
+    final parsedBio = jsonDecode(data);
+    return (parsedBio['image']['url'] as String?);
+    // return parsedMovies;
+  }
+
+  Future<String> getDirector({required String tconst}) async {
+    const path = '/title/get-top-crew';
+    final uri = Uri.https(apiHost, path, {
+      'tconst': tconst.replaceAll('/title/', ''),
+    });
+    final data = await getData(uri);
+    final parsedData = jsonDecode(data);
+    return (parsedData['directors'][0]['name']);
+  }
+
+  // List<APIPopularMovies> parseMovies(String responseBody) {
+  //   final parsed = jsonDecode(responseBody);
+  // return parsed
+  //     .take(5)
+  //     .map<APIPopularMovies>((json) => APIPopularMovies.fromJson(json))
+  //     .toList();
+  // }
 }

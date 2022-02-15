@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+
+import '../../models/movie.dart';
 part 'hive_db.g.dart';
 
 @HiveType(typeId: 0)
@@ -36,4 +38,43 @@ class HiveMovie extends HiveObject {
     required this.genres,
     // this.isWatchlist = false,
   });
+
+  factory HiveMovie.toHive(Movie movie) {
+    return HiveMovie(
+      id: movie.id,
+      title: movie.title,
+      overview: movie.overview,
+      imageUrl: movie.imageUrl,
+      director: movie.director,
+      duration: movie.duration,
+      rating: movie.rating,
+      year: movie.year,
+      genres: movie.genres,
+    );
+  }
 }
+
+@HiveType(typeId: 1)
+class HiveTopMovies extends HiveObject {
+  @HiveField(0)
+  final String titleId;
+
+  HiveTopMovies({
+    required this.titleId,
+  });
+}
+
+// class HiveMoviesList extends HiveObject {
+//   @HiveField(0)
+//   final List<HiveMovie> trendingMovies;
+//   @HiveField(1)
+//   final List<HiveMovie> topRatedMovies;
+//   @HiveField(2)
+//   final List<HiveMovie> watchlistMovies;
+
+//   HiveMoviesList({
+//     required this.trendingMovies,
+//     required this.topRatedMovies,
+//     required this.watchlistMovies,
+//   });
+// }

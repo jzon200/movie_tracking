@@ -63,3 +63,37 @@ class HiveMovieAdapter extends TypeAdapter<HiveMovie> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class HiveTopMoviesAdapter extends TypeAdapter<HiveTopMovies> {
+  @override
+  final int typeId = 1;
+
+  @override
+  HiveTopMovies read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return HiveTopMovies(
+      titleId: fields[0] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, HiveTopMovies obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.titleId);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HiveTopMoviesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'color.dart';
 
 class AppTheme {
-  static const grey = Color(0xFF6D6E70);
-  static const greenAccent = Color(0xFFB9C95A);
   static TextTheme darkTextTheme = TextTheme(
     // Rating
     headline1: GoogleFonts.rubik(
@@ -65,9 +64,10 @@ class AppTheme {
         foregroundColor: Colors.white,
         backgroundColor: Colors.white,
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.white,
-        unselectedItemColor: grey,
+      navigationBarTheme: const NavigationBarThemeData(
+        indicatorColor: Colors.blue,
+        backgroundColor: Color.fromARGB(8, 208, 188, 255),
+        // iconTheme: IconThemeData(color: Colors.white),
       ),
       textTheme: darkTextTheme,
     );
