@@ -30,7 +30,7 @@ class UserRatings {
     UserRatings(
       name: 'Levi',
       imagePath: 'assets/images/levi.jpg',
-      rating: 3,
+      rating: 4,
     ),
   ];
 }

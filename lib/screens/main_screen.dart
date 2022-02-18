@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tracking/ui/app_theme.dart';
+import 'package:provider/provider.dart';
+
 import '../models/tab_provider.dart';
 import 'top_rated_screen.dart';
 import 'trending_screen.dart';
 import 'watchlist_screen.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

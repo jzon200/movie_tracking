@@ -1,30 +1,26 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movie_tracking/data/cloud_firestore/firestore_movie.dart';
 import '../../models/movie.dart';
 
-class WatchlistDao {
+class TrendingMoviesDao {
   final reference = FirebaseFirestore.instance
-      .collection('watchlist')
+      .collection('trending_movies')
       .withConverter<FirestoreMovie>(
           fromFirestore: (snapshot, _) =>
               FirestoreMovie.fromJson(snapshot.data()!),
           toFirestore: (movie, _) => movie.toJson());
 
-  Future<void> addToWatchlist(Movie movie) async {
+  Future<void> addMovie(Movie movie) async {
     await reference.doc(movie.documentId).set(movie.toFirestore());
-  }
-
-  Future<void> removeFromWatchlist(Movie movie) async {
-    await reference
-        .doc(movie.documentId)
-        .delete()
-        .then((value) => print("Removed from watchlist: ${movie.documentId}"))
-        .catchError((error) => print("Failed to delete user: $error"));
   }
 
   Stream<QuerySnapshot<FirestoreMovie>> getMovies() {
     return reference.orderBy('dateAdded').snapshots();
   }
+
+  // Future<void> addMovies(List<Movie> movies) async {
+  //   for (var movie in movies) {
+  //     await reference.doc(movie.documentId).set(movie.toFirestore());
+  //   }
+  // }
 }

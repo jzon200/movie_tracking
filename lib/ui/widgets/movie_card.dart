@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_tracking/ui/color.dart';
 
-import '../../data/cloud_firestore/firestore_movie.dart';
 import '../../models/movie.dart';
 import 'background_gradient.dart';
 
@@ -36,7 +34,7 @@ class MovieCard extends StatelessWidget {
             width: 324,
             child: Center(
               child: SpinKitThreeBounce(
-                color: Colors.grey,
+                color: gray,
                 size: deviceHeight * 0.05,
               ),
             ),
@@ -69,7 +67,6 @@ class MovieCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
-                    // const SizedBox(height: 24),
                     Row(
                       children: [
                         Text(
@@ -90,7 +87,6 @@ class MovieCard extends StatelessWidget {
                         const SizedBox(width: 12),
                       ],
                     ),
-                    // const SizedBox(height: 30),
                     Wrap(
                       spacing: 8.0,
                       children: movie.genres!
@@ -101,7 +97,9 @@ class MovieCard extends StatelessWidget {
                                   horizontal: 8,
                                 ),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
+                                  color: darkGray,
+                                  border:
+                                      Border.all(width: 2, color: Colors.white),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: Text(
@@ -111,7 +109,6 @@ class MovieCard extends StatelessWidget {
                               ))
                           .toList(),
                     ),
-                    // const SizedBox(height: 16),
                     (movie.rating != null)
                         ? Row(
                             children: [
@@ -134,7 +131,7 @@ class MovieCard extends StatelessWidget {
                                       Icons.star,
                                       color: (rating.toInt() > index)
                                           ? yellow
-                                          : Colors.grey,
+                                          : gray,
                                       size: 20,
                                     );
                                   },

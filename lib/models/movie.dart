@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:movie_tracking/data/cloud_firestore/firestore_movie.dart';
-import 'package:movie_tracking/data/hive/hive_db.dart';
+
+import '../data/cloud_firestore/firestore_movie.dart';
 import 'user_ratings.dart';
 
-import 'cast.dart';
-
 class Movie {
-  final String? id;
+  final String? titleId;
   final String? title;
   final String? overview;
   final String? imageUrl;
@@ -14,14 +12,14 @@ class Movie {
   final double? rating;
   final int? year;
   final List<String>? genres;
+  String? documentId;
   String? director;
   List<String?>? actorsProfile;
-  List<Cast>? cast;
-  bool isWatchlist;
-  String? reference;
+  // bool isWatchlist;
 
   Movie({
-    this.id,
+    this.documentId,
+    this.titleId,
     this.title,
     this.imageUrl,
     this.overview,
@@ -31,14 +29,13 @@ class Movie {
     this.year,
     this.genres,
     this.actorsProfile,
-    this.isWatchlist = false,
-    this.reference,
+    // this.isWatchlist = false,
   });
 
   @override
   String toString() {
     return {
-      'id': id,
+      'id': titleId,
       'title': title,
       'overview': overview,
       'imageUrl': imageUrl,
@@ -47,13 +44,12 @@ class Movie {
       'rating': rating,
       'year': year,
       'genres': genres,
-      'cast': cast,
     }.toString();
   }
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      id: json['id'],
+      titleId: json['id'],
       title: json['title']['title'],
       overview: json['plotOutline']['text'],
       imageUrl: json['title']['image']['url'],
@@ -64,26 +60,9 @@ class Movie {
     );
   }
 
-  Map<String, Object?> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'overview': overview,
-      'imageUrl': imageUrl,
-      'duration': duration,
-      'rating': rating,
-      'year': year,
-      'genres': genres,
-      'director': director,
-      'isWatchlist': isWatchlist,
-      'actorsProfile': actorsProfile,
-      // 'cast': cast,
-    };
-  }
-
   FirestoreMovie toFirestore() {
     return FirestoreMovie(
-      id: id,
+      titleId: titleId,
       title: title,
       overview: overview,
       imageUrl: imageUrl,
@@ -92,24 +71,8 @@ class Movie {
       year: year,
       genres: genres,
       director: director,
-      isWatchlist: isWatchlist,
+      // isWatchlist: isWatchlist,
       actorsProfile: actorsProfile,
-      // cast: cast,
-    );
-  }
-
-  factory Movie.fromHive(HiveMovie movie) {
-    return Movie(
-      id: movie.id,
-      title: movie.title,
-      overview: movie.overview,
-      imageUrl: movie.imageUrl,
-      director: movie.director,
-      duration: movie.duration,
-      rating: movie.rating,
-      year: movie.year,
-      // genres: movie.genres!.take(3).toList(),
-      // isWatchlist: movie.isWatchlist,
     );
   }
 
@@ -129,7 +92,7 @@ class Movie {
 
   static List<Movie> movieInfo = [
     Movie(
-      id: 'm1',
+      titleId: 'm1',
       title: 'Birds Of Prey',
       imageUrl: 'assets/birds_of_prey.png',
       director: 'Cathy Yan',
@@ -146,7 +109,7 @@ Birds of Prey is the first DCEU film and the second DC Films production to be ra
 ''',
     ),
     Movie(
-      id: 'm2',
+      titleId: 'm2',
       title: 'Avengers: Endgame',
       imageUrl: 'assets/avengers_endgame.png',
       director: 'Joe Russo',
@@ -156,7 +119,7 @@ Birds of Prey is the first DCEU film and the second DC Films production to be ra
       genres: ['Action', 'Superhero', 'Sci-fi'],
     ),
     Movie(
-      id: 'm3',
+      titleId: 'm3',
       title: 'Spider-Man Far From Home',
       imageUrl: 'assets/spider_man_far_from_home.png',
       director: 'Jon Watts',
@@ -166,7 +129,7 @@ Birds of Prey is the first DCEU film and the second DC Films production to be ra
       genres: ['Action', 'Superhero', 'Adventure'],
     ),
     Movie(
-      id: 'm4',
+      titleId: 'm4',
       title: 'Star Wars: The Rise of Skywalker',
       imageUrl: 'assets/star_wars_rise_of_skywalker.png',
       director: 'J.J. Abrams',
@@ -176,7 +139,7 @@ Birds of Prey is the first DCEU film and the second DC Films production to be ra
       genres: ['Action', 'Sci-fi', 'Fantasy'],
     ),
     Movie(
-      id: 'm5',
+      titleId: 'm5',
       title: 'Star Wars: The Last Jedi ',
       imageUrl: 'assets/star_wars_the_last_jedi.png',
       director: 'Rian Johnson',
@@ -186,7 +149,7 @@ Birds of Prey is the first DCEU film and the second DC Films production to be ra
       genres: ['Action', 'Sci-fi', 'Fantasy'],
     ),
     Movie(
-      id: 'm6',
+      titleId: 'm6',
       title: 'Frozen 2',
       imageUrl: 'assets/frozen_2.png',
       director: 'Jennifer Lee',

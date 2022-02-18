@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_tracking/data/cloud_firestore/watchlist_dao.dart';
 import 'package:provider/provider.dart';
 
-import 'data/cloud_firestore/movie_dao.dart';
-import 'data/hive/hive_repository.dart';
+import 'data/cloud_firestore/top_movies_dao.dart';
+import 'data/cloud_firestore/trending_movies_dao.dart';
+import 'data/cloud_firestore/watchlist_dao.dart';
 import 'models/tab_provider.dart';
 import 'screens/main_screen.dart';
 import 'screens/movie_details_screen.dart';
@@ -19,13 +19,6 @@ Future<void> main() async {
     persistenceEnabled: true,
     // cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
-  // FirebaseFirestore.instance
-  //     .collection('watchlist')
-  //     .doc('rJssbhYRQRn31b2P7d5E')
-  //     .delete()
-  //     .then((value) => print("User Deleted"))
-  //     .catchError((error) => print("Failed to delete user: $error"));
-  ;
   runApp(const MyApp());
 }
 
@@ -37,26 +30,20 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => HiveRepository(),
-        ),
-        ChangeNotifierProvider(
           create: (_) => TabProvider(),
         ),
         Provider(
           lazy: false,
-          create: (_) => MovieDao(),
+          create: (_) => TrendingMoviesDao(),
+        ),
+        Provider(
+          lazy: false,
+          create: (_) => TopMoviesDao(),
         ),
         Provider(
           lazy: false,
           create: (_) => WatchlistDao(),
         ),
-        // ChangeNotifierProvider(
-        //   lazy: false,
-        //   create: (_) => WatchlistRepository(),
-        // ),
-        // ChangeNotifierProvider(
-        //   create: (_) => MoviesRepository(),
-        // ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

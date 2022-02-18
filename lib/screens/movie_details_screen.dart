@@ -1,18 +1,13 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:movie_tracking/data/cloud_firestore/movie_dao.dart';
-import 'package:movie_tracking/data/cloud_firestore/watchlist_dao.dart';
-import 'package:movie_tracking/data/hive/hive_repository.dart';
 import 'package:provider/provider.dart';
 
 import '../data/cloud_firestore/firestore_movie.dart';
-import '../data/hive/hive_db.dart';
+import '../data/cloud_firestore/trending_movies_dao.dart';
+import '../data/cloud_firestore/watchlist_dao.dart';
 import '../models/movie.dart';
 import '../models/user_ratings.dart';
-import '../ui/app_theme.dart';
 import '../ui/color.dart';
 import '../ui/widgets/add_watchlist_button.dart';
 import '../ui/widgets/background_gradient.dart';
@@ -20,6 +15,7 @@ import '../ui/widgets/recommendations_list.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   static const routeName = '/movie-details';
+
   const MovieDetailsScreen({Key? key}) : super(key: key);
 
   @override
@@ -27,211 +23,222 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
-  bool _isWatchlist = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    final watchlistDao = Provider.of<WatchlistDao>(context, listen: false);
   }
-  // @override
-  // void dispose() {
-  //   Hive.close();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
     final watchlistDao = Provider.of<WatchlistDao>(context, listen: false);
-    final movieDao = Provider.of<MovieDao>(context, listen: false);
+    final trendingMoviesDao =
+        Provider.of<TrendingMoviesDao>(context, listen: false);
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
-    print(movie.id);
-    print(movie.reference);
-    // print(movie.reference);
-    // final movies = watchlistDao.getMovies();
-    // watchlistDao.isWatchlist(movie);
+    print(movie.titleId);
+    print(movie.documentId);
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: 1680,
-            child: Stack(
-              children: [
-                // Banner
-                if (movie.imageUrl != null)
-                  CachedNetworkImage(
-                    imageUrl: movie.imageUrl!,
-                    imageBuilder: (context, imageProvider) => Align(
-                      alignment: const Alignment(0.0, -1.5),
-                      child: Container(
-                        height: 1207,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            isAntiAlias: true,
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+        child: ListView(
+          primary: true,
+          children: [
+            SizedBox(
+              height: 1680,
+              child: Stack(
+                children: [
+                  // Banner
+                  if (movie.imageUrl != null)
+                    CachedNetworkImage(
+                      imageUrl: movie.imageUrl!,
+                      imageBuilder: (context, imageProvider) => Align(
+                        alignment: const Alignment(0.0, -1.5),
+                        child: Container(
+                          height: 1207,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              isAntiAlias: true,
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
+                          child: const BackgroundGradient(),
                         ),
-                        child: const BackgroundGradient(),
                       ),
                     ),
-                  ),
-                // Back button
-                _buildBackButton(context),
-                // Movie Details
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 1314,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(16.0),
-                      ),
-                      color: darkGray,
-                    ),
+                  // Back button
+                  _buildBackButton(context),
+                  // Movie Details
+                  Align(
+                    alignment: Alignment.bottomCenter,
                     child: Container(
-                      margin: const EdgeInsets.only(top: 200),
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        bottom: 32,
+                      height: 1314,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16.0),
+                        ),
+                        color: darkGray,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Overview',
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          const SizedBox(height: 16),
-                          Visibility(
-                            visible: movie.overview!.length < 250,
-                            child: Text(movie.overview!,
-                                style: Theme.of(context).textTheme.bodyText1!
-                                // .copyWith(color: Colors.black),
-                                ),
-                          ),
-                          Visibility(
-                            visible: movie.overview!.length > 250,
-                            child: SizedBox(
-                              height: 70,
-                              child: Stack(
-                                children: [
-                                  Text(movie.overview!,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1!
-                                      // .copyWith(color: Colors.black),
-                                      ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: FractionalOffset.topCenter,
-                                        end: FractionalOffset.bottomCenter,
-                                        stops: const [0.4, 1.0],
-                                        colors: [
-                                          darkGray.withOpacity(0.0),
-                                          darkGray,
-                                        ],
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 200),
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 32,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Overview',
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            const SizedBox(height: 16),
+                            Visibility(
+                              visible: movie.overview!.length < 250,
+                              child: Text(movie.overview!,
+                                  style: Theme.of(context).textTheme.bodyText1!
+                                  // .copyWith(color: Colors.black),
+                                  ),
+                            ),
+                            Visibility(
+                              visible: movie.overview!.length > 250,
+                              child: SizedBox(
+                                height: 70,
+                                child: Stack(
+                                  children: [
+                                    Text(movie.overview!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                        // .copyWith(color: Colors.black),
+                                        ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: FractionalOffset.topCenter,
+                                          end: FractionalOffset.bottomCenter,
+                                          stops: const [0.4, 1.0],
+                                          colors: [
+                                            darkGray.withOpacity(0.0),
+                                            darkGray,
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: movie.overview!.length > 250,
+                              child: Center(
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Text(
+                                    'READ MORE',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(
+                                          color: Colors.lightBlue,
+                                          letterSpacing: 3.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: movie.overview!.length > 250,
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Text(
-                                  'READ MORE',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(
-                                        color: Colors.lightBlue,
-                                        letterSpacing: 3.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Cast',
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildCastAvatarList(movie),
-                          const SizedBox(height: 16),
-                          (movie.rating != null)
-                              ? // Ratings List
-                              _buildRatingsList(ratings: movie.rating!)
-                              : Text(
-                                  'No ratings yet',
-                                  style: Theme.of(context).textTheme.headline3,
-                                ),
-                          const SizedBox(height: 32),
-                          Text(
-                            'You May Also Like',
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          const SizedBox(height: 16),
-                          // Movie Card
-                          StreamBuilder<QuerySnapshot<FirestoreMovie>>(
-                            stream: movieDao.getMovies(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text(snapshot.error.toString()),
-                                );
-                              }
-
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              final data = snapshot.requireData;
-
-                              return RecommendationsList(
-                                items: data.docs
-                                    .where((element) => element.id != movie.id)
-                                    .toList(),
-                              );
-                            },
-                          ),
-
-                          // Add To Watchlist button
-                          const Spacer(),
-                          AddWatchlistButton(
-                            movie: movie,
-                            onPressed: () {
-                              setState(() {
-                                if (!movie.isWatchlist) {
-                                  watchlistDao.addToWatchlist(movie);
-                                } else {
-                                  watchlistDao.removeFromWatchlist(movie);
+                            const SizedBox(height: 16),
+                            Text(
+                              'Cast',
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            const SizedBox(height: 16),
+                            _buildCastAvatarList(movie),
+                            const SizedBox(height: 16),
+                            (movie.rating != null)
+                                ? // Ratings List
+                                _buildRatingsList(ratings: movie.rating!)
+                                : Text(
+                                    'No ratings yet',
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                            const SizedBox(height: 32),
+                            Text(
+                              'You May Also Like',
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            const SizedBox(height: 16),
+                            // Movie Card
+                            StreamBuilder<QuerySnapshot<FirestoreMovie>>(
+                              stream: trendingMoviesDao.getMovies(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text(snapshot.error.toString()),
+                                  );
                                 }
-                              });
-                            },
-                            isWatchlist: movie.isWatchlist,
-                          ),
-                        ],
+
+                                if (!snapshot.hasData) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+
+                                final data = snapshot.requireData;
+
+                                return RecommendationsList(
+                                  items: data.docs
+                                      .where((element) =>
+                                          movie.documentId !=
+                                          element.reference.id)
+                                      .toList(),
+                                );
+                              },
+                            ),
+
+                            const Spacer(),
+                            // Add To Watchlist button
+                            StreamBuilder<QuerySnapshot<FirestoreMovie>>(
+                              stream: watchlistDao.getMovies(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.active) {
+                                  final data = snapshot.requireData;
+                                  final watchlistData = data.docs
+                                      .map((e) => e.reference.id)
+                                      .toList();
+                                  final isWatchlist =
+                                      watchlistData.contains(movie.documentId);
+                                  return AddWatchlistButton(
+                                    movie: movie,
+                                    onPressed: () {
+                                      if (isWatchlist) {
+                                        watchlistDao.removeFromWatchlist(movie);
+                                      } else {
+                                        watchlistDao.addToWatchlist(movie);
+                                      }
+                                    },
+                                    isWatchlist: isWatchlist,
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                // Movie Poster
-                _buildMoviePoster(movie),
-                // Movie Headline
-                _buildMovieHeadline(movie, context),
-              ],
+                  // Movie Poster
+                  _buildMoviePoster(movie),
+                  // Movie Headline
+                  _buildMovieHeadline(movie, context),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -251,32 +258,31 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AutoSizeText(
+            Text(
               movie.title!,
-              minFontSize: 18,
-              maxFontSize: 24,
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline2!
+                  .copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
             FittedBox(
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(movie.year.toString(),
-                      style: Theme.of(context).textTheme.bodyText1!),
+                  Text(
+                    movie.year.toString(),
+                    style: Theme.of(context).textTheme.bodyText1!,
+                  ),
                   const SizedBox(width: 16),
                   Text(
-                      '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
-                      style: Theme.of(context).textTheme.bodyText1!
-                      // .copyWith(color: Colors.black),
-                      ),
+                    '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
+                    style: Theme.of(context).textTheme.bodyText1!,
+                  ),
                   const SizedBox(width: 16),
-                  Text(movie.director ?? '',
-                      style: Theme.of(context).textTheme.bodyText1!
-                      // .copyWith(color: Colors.black),
-                      ),
+                  Text(
+                    movie.director ?? '',
+                    style: Theme.of(context).textTheme.bodyText1!,
+                  ),
                 ],
               ),
             ),
@@ -359,9 +365,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 foregroundImage: (movie.actorsProfile != null &&
                         movie.actorsProfile![index] != null)
                     ? CachedNetworkImageProvider(movie.actorsProfile![index]!)
-                    : null,
+                    : const CachedNetworkImageProvider(
+                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
                 radius: 43.75,
-                backgroundColor: const Color(0xFFC4C4C4),
+                backgroundColor: gray,
               ),
               separatorBuilder: (_, index) => const SizedBox(width: 16),
               itemCount: (movie.actorsProfile != null)
@@ -407,14 +414,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         Row(
           children: [
             Expanded(
-              child: Text('Ratings - 4',
-                  style: Theme.of(context).textTheme.headline3!
-                  // .copyWith(color: Colors.black),
-                  ),
+              child: Text(
+                'Ratings  -  4',
+                style: Theme.of(context).textTheme.headline3!,
+              ),
             ),
-            Text('$ratings', style: Theme.of(context).textTheme.headline1!
-                // .copyWith(color: Colors.black),
-                ),
+            Text(
+              '$ratings',
+              style: Theme.of(context).textTheme.headline1!,
+            ),
             const SizedBox(width: 6),
             Expanded(
               child: SizedBox(
@@ -430,7 +438,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       margin: const EdgeInsets.only(left: 8),
                       child: Icon(
                         Icons.star,
-                        color: (rating.toInt() > index) ? yellow : Colors.grey,
+                        color: (rating.toInt() > index) ? yellow : gray,
                         size: 20,
                       ),
                     );
@@ -446,14 +454,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 contentPadding: EdgeInsets.zero,
                 leading: CircleAvatar(
                   foregroundImage: AssetImage(user.imagePath),
-                  backgroundColor: const Color(0xFFC4C4C4),
+                  backgroundColor: gray,
                 ),
                 title: Text(
                   '${user.name} - ${user.date}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1!
-                      .copyWith(color: grey),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 subtitle: Row(
                   children: [
@@ -469,8 +474,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             margin: const EdgeInsets.only(right: 8),
                             child: Icon(
                               Icons.star,
-                              color:
-                                  (user.rating > index) ? yellow : Colors.grey,
+                              color: (user.rating > index) ? yellow : gray,
                               size: 12,
                             ),
                           ),

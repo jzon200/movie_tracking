@@ -3,10 +3,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../models/cast.dart';
 import '../models/movie.dart';
 
-const String apiKey = '3699168e6emsh75b0c25459f56fap1f024bjsn54ddb5a2e809';
+const String apiKey = 'c8c0f12f10mshec5d6f9d2fc388ap17b882jsnd60af66bfa5f';
 const String apiHost = 'imdb8.p.rapidapi.com';
 
 class HttpService {
@@ -35,7 +34,9 @@ class HttpService {
       'currentCountry': currentCountry,
     });
     final data = await getData(uri);
-    return Movie.fromJson(jsonDecode(data));
+    final responseBody = jsonDecode(data);
+    print(responseBody);
+    return Movie.fromJson(responseBody);
   }
 
   Future<List<String>> getPopularMovies() async {
@@ -48,7 +49,7 @@ class HttpService {
     final data = await getData(uri);
     final parsedMovies = jsonDecode(data);
     return parsedMovies
-        .take(5)
+        .take(10)
         .map<String>((titleId) => titleId.toString())
         .toList();
   }
@@ -59,8 +60,8 @@ class HttpService {
     final data = await getData(uri);
     final parsedMovies = jsonDecode(data);
     return parsedMovies
-        .map<String>((titleId) => titleId.toString())
-        .take(5)
+        .map<String>((json) => json['id'].toString())
+        .take(10)
         .toList();
   }
 
@@ -84,8 +85,21 @@ class HttpService {
     });
     final data = await getData(uri);
     final parsedBio = jsonDecode(data);
-    return (parsedBio['image']['url'] as String?);
+
+    return (parsedBio['image'] == null)
+        ? null
+        : (parsedBio['image']['url'] as String?);
     // return parsedMovies;
+  }
+
+  Future<List<String?>> getActorsProfile({required String tconst}) async {
+    final topCast = await HttpService().getTopCast(tconst: tconst);
+    final actorsProfilePic = <String?>[];
+    for (var name in topCast) {
+      final imageUrl = await getActorProfileUrl(nconst: name);
+      actorsProfilePic.add(imageUrl);
+    }
+    return actorsProfilePic;
   }
 
   Future<String> getDirector({required String tconst}) async {
@@ -97,12 +111,4 @@ class HttpService {
     final parsedData = jsonDecode(data);
     return (parsedData['directors'][0]['name']);
   }
-
-  // List<APIPopularMovies> parseMovies(String responseBody) {
-  //   final parsed = jsonDecode(responseBody);
-  // return parsed
-  //     .take(5)
-  //     .map<APIPopularMovies>((json) => APIPopularMovies.fromJson(json))
-  //     .toList();
-  // }
 }

@@ -6,9 +6,10 @@ class AppTheme {
   static TextTheme darkTextTheme = TextTheme(
     // Rating
     headline1: GoogleFonts.rubik(
-      fontSize: 32.0,
+      fontSize: 28.0,
       fontWeight: FontWeight.w900,
       color: Colors.white,
+      letterSpacing: 2.0,
     ),
     // Title
     headline2: GoogleFonts.chivo(
@@ -53,7 +54,7 @@ class AppTheme {
     subtitle1: GoogleFonts.rubik(
       fontSize: 14,
       fontWeight: FontWeight.normal,
-      color: const Color(0xFF727272),
+      color: gray,
     ),
   );
 

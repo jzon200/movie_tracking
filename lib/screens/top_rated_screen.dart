@@ -1,7 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/movie.dart';
+import '../data/cloud_firestore/firestore_movie.dart';
+import '../data/cloud_firestore/top_movies_dao.dart';
 import '../network/http_service.dart';
+import '../ui/widgets/loading_widget.dart';
+import '../ui/widgets/movie_card.dart';
+import 'movie_details_screen.dart';
 
 class TopRatedScreen extends StatefulWidget {
   const TopRatedScreen({Key? key}) : super(key: key);
@@ -16,56 +23,79 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
     super.initState();
   }
 
-  Future<List<String>> getTopRatedMovies() async {
-    final movies = await HttpService().getTopMovies();
-    return movies;
-  }
-
-  Future<List<Movie>> getOverviewDetails() async {
-    final apiTopMovies = await getTopRatedMovies();
-    final movies = <Movie>[];
-    for (var titleId in apiTopMovies) {
-      final movie = await HttpService().getMovieDetails(tconst: titleId);
-      // final casts = await getActorsInfo(tconst: titleId);
-      // final director = await HttpService().getDirector(tconst: titleId);
-      // movie.cast = casts;
-      // movie.director = director;
-      movies.add(movie);
-    }
-    return movies;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.green);
-    // final repository = Provider.of<TopRatedRepository>(context, listen: false);
-    // return FutureBuilder<List<Movie>>(
-    //   future:
-    //       getOverviewDetails().then((values) => repository.addMovies(values)),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       if (snapshot.hasError) {
-    //         return Center(
-    //           child: Text(
-    //             snapshot.error.toString(),
-    //             textAlign: TextAlign.center,
-    //             textScaleFactor: 1.3,
-    //           ),
-    //         );
-    //       }
-    //       // isLoading = false;
-    //       final query = snapshot.data ?? [];
-    //       // inErrorState = false;
-    //       return MovieList(movies: query);
-    //     } else {
-    //       return const Center(
-    //         child: SpinKitSquareCircle(
-    //           color: Colors.blueAccent,
-    //           size: 75,
-    //         ),
-    //       );
-    //     }
-    //   },
-    // );
+    final movieDao = Provider.of<TopMoviesDao>(context, listen: false);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await getOverviewDetails();
+        Navigator.of(context).pushReplacementNamed('/');
+      },
+      child: StreamBuilder<QuerySnapshot<FirestoreMovie>>(
+        stream: movieDao.getMovies(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const LoadingWidget();
+          }
+
+          final data = snapshot.requireData;
+
+          if (data.docs.isEmpty) {
+            getOverviewDetails();
+            return const LoadingWidget();
+          }
+
+          return ListView.builder(
+            itemCount: data.size,
+            itemBuilder: (context, index) {
+              final movie = data.docs[index].data().toMovie();
+              movie.documentId = data.docs[index].reference.id;
+              return MovieCard(
+                movie: movie,
+                onTap: () => Navigator.of(context).pushNamed(
+                  MovieDetailsScreen.routeName,
+                  arguments: movie,
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Future<bool> moviesDidNotChange(List<String> apiMovies) async {
+    final currentmovies =
+        await Provider.of<TopMoviesDao>(context, listen: false)
+            .reference
+            .orderBy('dateAdded')
+            .get()
+            .then((value) => value.docs.map((e) => e.data().titleId).toList());
+    return listEquals(apiMovies, currentmovies);
+  }
+
+  Future<void> getOverviewDetails() async {
+    final apiTopMovies = await HttpService().getTopMovies();
+    print(apiTopMovies);
+    final didNotChange = await moviesDidNotChange(apiTopMovies);
+    if (didNotChange) {
+      return;
+    }
+    for (var titleId in apiTopMovies) {
+      final movie = await HttpService().getMovieDetails(tconst: titleId);
+      final director = await HttpService().getDirector(tconst: titleId);
+      final actorsProfile =
+          await HttpService().getActorsProfile(tconst: titleId);
+      movie.director = director;
+      movie.actorsProfile = actorsProfile;
+      Provider.of<TopMoviesDao>(context, listen: false).addMovie(movie);
+    }
+    // Provider.of<MovieDao>(context, listen: false).addMovies(movies);
   }
 }
