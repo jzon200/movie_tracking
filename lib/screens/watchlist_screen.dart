@@ -2,12 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../data/cloud_firestore/firestore_movie.dart';
 import '../data/cloud_firestore/watchlist_dao.dart';
 import '../models/movie.dart';
+import '../models/tab_provider.dart';
 import '../ui/color.dart';
 import 'movie_details_screen.dart';
 
@@ -40,9 +42,34 @@ class _WatchListScreenState extends State<WatchListScreen> {
 
         if (data.docs.isEmpty) {
           return Center(
-            child: Text(
-              'No Movies Added To Watchlist Yet!',
-              style: Theme.of(context).textTheme.headline3,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: SvgPicture.asset('assets/svg/home_cinema.svg'),
+                    ),
+                  ),
+                  Text(
+                    'No Movies on the Watchlist yet!',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Provider.of<TabProvider>(context, listen: false)
+                          .goToMovies();
+                    },
+                    child: Text(
+                      'Browse Movies',
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    style: ElevatedButton.styleFrom(primary: blue),
+                  )
+                ],
+              ),
             ),
           );
         }

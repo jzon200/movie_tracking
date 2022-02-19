@@ -7,4 +7,9 @@ class TabProvider extends ChangeNotifier {
     selectedIndex = index;
     notifyListeners();
   }
+
+  void goToMovies() {
+    selectedIndex = 0;
+    notifyListeners();
+  }
 }
