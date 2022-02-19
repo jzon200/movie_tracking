@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'color.dart';
 
 class AppTheme {
@@ -30,8 +31,8 @@ class AppTheme {
       color: Colors.white,
     ),
     headline5: GoogleFonts.chivo(
-      fontSize: 12.0,
-      fontWeight: FontWeight.bold,
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
     // Movie Info
@@ -47,7 +48,7 @@ class AppTheme {
       color: Colors.white,
     ),
     button: GoogleFonts.rubik(
-      fontSize: 18,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
@@ -61,16 +62,12 @@ class AppTheme {
   static ThemeData dark() {
     return ThemeData(
       brightness: Brightness.dark,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.white,
-      ),
       navigationBarTheme: const NavigationBarThemeData(
-        indicatorColor: Colors.blue,
+        indicatorColor: Color(0XFF4A4458),
         backgroundColor: Color.fromARGB(8, 208, 188, 255),
-        // iconTheme: IconThemeData(color: Colors.white),
       ),
       textTheme: darkTextTheme,
+      // errorColor: errorColor,
     );
   }
 }

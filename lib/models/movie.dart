@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../data/cloud_firestore/firestore_movie.dart';
-import 'user_ratings.dart';
 
 class Movie {
   final String? titleId;
@@ -15,7 +12,6 @@ class Movie {
   String? documentId;
   String? director;
   List<String?>? actorsProfile;
-  // bool isWatchlist;
 
   Movie({
     this.documentId,
@@ -29,7 +25,6 @@ class Movie {
     this.year,
     this.genres,
     this.actorsProfile,
-    // this.isWatchlist = false,
   });
 
   @override
@@ -71,23 +66,29 @@ class Movie {
       year: year,
       genres: genres,
       director: director,
-      // isWatchlist: isWatchlist,
       actorsProfile: actorsProfile,
     );
   }
 
-  String getRating(double? rating) {
+  static String getRating(double? rating) {
     if (rating == null) {
       return 'No ratings yet';
     }
     return rating.toString();
   }
 
-  String getDirector(String? director) {
+  static String getDirector(String? director) {
     if (director == null) {
       return 'N/A';
     }
     return director;
+  }
+
+  static String getDuration(int? duration) {
+    if (duration == null) {
+      return '';
+    }
+    return '${(duration / 60).floor()}h ${duration % 60}min';
   }
 
   static List<Movie> movieInfo = [

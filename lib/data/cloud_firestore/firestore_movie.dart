@@ -13,8 +13,6 @@ class FirestoreMovie {
   String? director;
   List<String?>? actorsProfile;
   final DateTime dateAdded = DateTime.now();
-  // bool isWatchlist;
-
   FirestoreMovie({
     this.titleId,
     this.title,
@@ -27,7 +25,6 @@ class FirestoreMovie {
     this.director,
     this.documentId,
     this.actorsProfile,
-    // this.isWatchlist = false,
   });
 
   factory FirestoreMovie.fromJson(Map<String, Object?> json) {
@@ -41,7 +38,6 @@ class FirestoreMovie {
       year: json['year'] as int?,
       genres: (json['genres'] as List).cast<String>(),
       director: json['director'] as String?,
-      // isWatchlist: json['isWatchlist'] as bool,
       actorsProfile: (json['actorsProfile'] as List?)!.cast<String?>(),
     );
   }
@@ -58,7 +54,6 @@ class FirestoreMovie {
       'genres': genres,
       'director': director,
       'dateAdded': dateAdded,
-      // 'isWatchlist': isWatchlist,
       'actorsProfile': actorsProfile,
     };
   }
@@ -74,7 +69,6 @@ class FirestoreMovie {
       year: year,
       genres: genres,
       director: director,
-      // isWatchlist: isWatchlist,
       actorsProfile: actorsProfile,
     );
   }

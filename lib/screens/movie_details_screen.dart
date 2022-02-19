@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import '../models/user_ratings.dart';
 import '../ui/color.dart';
 import '../ui/widgets/add_watchlist_button.dart';
 import '../ui/widgets/background_gradient.dart';
+import '../ui/widgets/genre_chip.dart';
 import '../ui/widgets/recommendations_list.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -36,6 +38,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
     print(movie.titleId);
     print(movie.documentId);
+    // TODO: Clean Code!
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -55,7 +58,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           height: 1207,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              isAntiAlias: true,
                               image: imageProvider,
                               fit: BoxFit.cover,
                             ),
@@ -258,8 +260,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            AutoSizeText(
               movie.title!,
+              minFontSize: 17,
+              maxFontSize: 24,
+              maxLines: 2,
               style: Theme.of(context)
                   .textTheme
                   .headline2!
@@ -267,18 +272,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             ),
             const SizedBox(height: 16),
             FittedBox(
-              child: Row(
+              child: Wrap(
+                spacing: 16.0,
                 children: [
                   Text(
                     movie.year.toString(),
                     style: Theme.of(context).textTheme.bodyText1!,
                   ),
-                  const SizedBox(width: 16),
                   Text(
                     '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
                     style: Theme.of(context).textTheme.bodyText1!,
                   ),
-                  const SizedBox(width: 16),
                   Text(
                     movie.director ?? '',
                     style: Theme.of(context).textTheme.bodyText1!,
@@ -288,30 +292,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             ),
             const SizedBox(height: 16),
             FittedBox(
-              child: Row(
+              child: Wrap(
+                spacing: 8,
                 children: movie.genres!
                     .take(3)
-                    .map((data) => Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 2,
-                            horizontal: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.white,
-                            border: Border.all(
-                              color: blue,
-                            ),
-                          ),
-                          child: Text(
-                            data.toUpperCase(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5!
-                                .copyWith(color: blue),
-                          ),
-                        ))
+                    .map((data) => GenreChip(text: data))
                     .toList(),
               ),
             )
@@ -337,8 +322,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               : null,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
-            color: Colors.white,
-            width: 5.0,
+            color: gray,
+            width: 3.0,
           ),
           boxShadow: [
             BoxShadow(

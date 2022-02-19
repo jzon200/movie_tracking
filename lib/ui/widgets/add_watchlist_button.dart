@@ -25,16 +25,11 @@ class AddWatchlistButton extends StatefulWidget {
 class _AddWatchlistButtonState extends State<AddWatchlistButton> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // bool isWatchlist = widget.movie.isWatchlist;
-
-    // final movies = watchlistDao.getMovies();
-    // var isWatchlist = false;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -55,7 +50,10 @@ class _AddWatchlistButtonState extends State<AddWatchlistButton> {
                 const SizedBox(width: 24),
                 Text(
                   (!widget.isWatchlist) ? 'Add To Watchlist' : 'Mark Watched',
-                  style: Theme.of(context).textTheme.button,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(fontWeight: FontWeight.w500),
                 )
               ],
             ),

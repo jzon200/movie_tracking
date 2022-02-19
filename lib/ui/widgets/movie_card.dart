@@ -1,35 +1,33 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:movie_tracking/ui/color.dart';
 
 import '../../models/movie.dart';
+import '../color.dart';
 import 'background_gradient.dart';
+import 'genre_chip.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
     Key? key,
     required this.movie,
     this.onTap,
-    // required this.reference,
   }) : super(key: key);
 
   final Movie movie;
   final Function()? onTap;
-  // final DocumentReference<FirestoreMovie> reference;
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final deviceHeight = deviceSize.height;
-    // final deviceWidth = deviceSize.width;
-    // print(deviceSize);
-    // final size = MediaQuery.of(context).size.height * 0.35;
     return GestureDetector(
         onTap: onTap,
         child: CachedNetworkImage(
           imageUrl: movie.imageUrl ?? '',
-          placeholder: (context, url) => SizedBox(
+          placeholder: (context, url) => Container(
+            color: const Color(0xFF303030),
             height: deviceHeight * 0.35,
             width: 324,
             child: Center(
@@ -61,52 +59,36 @@ class MovieCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 24),
-                    FittedBox(
-                      child: Text(
-                        movie.title ?? '',
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
+                    AutoSizeText(
+                      movie.title ?? '',
+                      minFontSize: 16,
+                      maxFontSize: 24,
+                      maxLines: 2,
+                      style: Theme.of(context).textTheme.headline2,
                     ),
-                    Row(
+                    Wrap(
+                      spacing: 12.0,
                       children: [
                         Text(
                           movie.year.toString(),
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        const SizedBox(width: 12),
                         Text(
-                          '${(movie.duration! / 60).floor()}h ${movie.duration! % 60}min',
+                          Movie.getDuration(movie.duration),
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        const SizedBox(width: 12),
                         if (movie.director != null)
                           Text(
                             movie.director!,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
-                        const SizedBox(width: 12),
                       ],
                     ),
                     Wrap(
                       spacing: 8.0,
                       children: movie.genres!
                           .take(3)
-                          .map((data) => Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 2,
-                                  horizontal: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: darkGray,
-                                  border:
-                                      Border.all(width: 2, color: Colors.white),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Text(
-                                  data.toUpperCase(),
-                                  style: Theme.of(context).textTheme.headline5,
-                                ),
-                              ))
+                          .map((data) => GenreChip(text: data))
                           .toList(),
                     ),
                     (movie.rating != null)
@@ -143,7 +125,7 @@ class MovieCard extends StatelessWidget {
                           )
                         : Text(
                             'No ratings yet',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                   ],
                 ),
