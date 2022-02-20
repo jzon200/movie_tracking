@@ -62,12 +62,15 @@ class AppTheme {
   static ThemeData dark() {
     return ThemeData(
       brightness: Brightness.dark,
-      navigationBarTheme: const NavigationBarThemeData(
-        indicatorColor: Color(0XFF4A4458),
-        backgroundColor: Color.fromARGB(8, 208, 188, 255),
+      navigationBarTheme: NavigationBarThemeData(
+        indicatorColor: m3IndicatorColor,
+        backgroundColor: m3NavBarColor,
+        labelTextStyle: MaterialStateProperty.all(darkTextTheme.headline4),
+        iconTheme: MaterialStateProperty.all(
+          const IconThemeData(color: m3NavBarOnPrimary),
+        ),
       ),
       textTheme: darkTextTheme,
-      // errorColor: errorColor,
     );
   }
 }

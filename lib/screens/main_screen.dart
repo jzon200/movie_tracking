@@ -41,11 +41,10 @@ class _MainScreenState extends State<MainScreen> {
                 NavigationDestination(
                   icon: Icon(
                     Icons.whatshot_outlined,
-                    color: Color(0xFFCAC4D0),
                   ),
                   selectedIcon: Icon(
                     Icons.whatshot,
-                    color: Color(0xFFE8DEF8),
+                    color: m3NavBarOnPrimarySelected,
                   ),
                   label: 'Trending',
                   tooltip: '',
@@ -53,11 +52,10 @@ class _MainScreenState extends State<MainScreen> {
                 NavigationDestination(
                   icon: Icon(
                     Icons.local_activity_outlined,
-                    color: Color(0xFFCAC4D0),
                   ),
                   selectedIcon: Icon(
                     Icons.local_activity,
-                    color: Color(0xFFE8DEF8),
+                    color: m3NavBarOnPrimarySelected,
                   ),
                   label: 'Top Rated',
                   tooltip: '',
@@ -65,11 +63,10 @@ class _MainScreenState extends State<MainScreen> {
                 NavigationDestination(
                   icon: Icon(
                     Icons.bookmarks_outlined,
-                    color: Color(0xFFCAC4D0),
                   ),
                   selectedIcon: Icon(
                     Icons.bookmarks,
-                    color: Color(0xFFE8DEF8),
+                    color: m3NavBarOnPrimarySelected,
                   ),
                   label: 'Watchlist',
                   tooltip: '',
@@ -77,25 +74,6 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
           ),
-          // bottomNavigationBar: BottomNavigationBar(
-
-          //   currentIndex: tab.selectedIndex,
-          //   onTap: tab.goToTab,
-          //   items: const [
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.bar_chart),
-          //       label: 'Trending',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.star),
-          //       label: 'Top Rated',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.bookmarks),
-          //       label: 'Watchlist',
-          //     ),
-          //   ],
-          // ),
         );
       },
     );

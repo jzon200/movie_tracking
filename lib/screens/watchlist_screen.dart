@@ -24,7 +24,6 @@ class _WatchListScreenState extends State<WatchListScreen> {
   @override
   Widget build(BuildContext context) {
     final watchlistDao = Provider.of<WatchlistDao>(context, listen: false);
-    // TODO: Use AnimatedList for fancy changes XD
     return StreamBuilder<QuerySnapshot<FirestoreMovie>>(
       stream: watchlistDao.getMovies(),
       builder: (context, snapshot) {
@@ -113,6 +112,7 @@ class WatchlistItem extends StatelessWidget {
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             watchlistDao.removeFromWatchlist(movie);
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('${movie.title} removed!'),
@@ -124,7 +124,6 @@ class WatchlistItem extends StatelessWidget {
                 action: SnackBarAction(
                   label: 'UNDO',
                   onPressed: () {
-                    // TODO: Undo Delete rather than Add again
                     watchlistDao.addToWatchlist(movie);
                   },
                 ),

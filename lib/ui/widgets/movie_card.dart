@@ -27,7 +27,7 @@ class MovieCard extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: movie.imageUrl ?? '',
           placeholder: (context, url) => Container(
-            color: const Color(0xFF303030),
+            color: materialThemeDark,
             height: deviceHeight * 0.35,
             width: 324,
             child: Center(
@@ -40,7 +40,9 @@ class MovieCard extends StatelessWidget {
           errorWidget: (context, url, error) => const Icon(Icons.error),
           imageBuilder: (context, imageProvider) => Container(
             constraints: BoxConstraints(
-                minHeight: deviceSize.height * 0.35, minWidth: 324),
+              minHeight: deviceSize.height * 0.35,
+              minWidth: 324,
+            ),
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: imageProvider,

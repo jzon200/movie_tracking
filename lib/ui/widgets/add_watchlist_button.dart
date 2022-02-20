@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tracking/data/cloud_firestore/watchlist_dao.dart';
-import 'package:provider/provider.dart';
 
 import '../../models/movie.dart';
 import '../color.dart';
@@ -9,9 +7,8 @@ class AddWatchlistButton extends StatefulWidget {
   const AddWatchlistButton({
     Key? key,
     required this.movie,
-    // required this.isWatchlist,
     required this.onPressed,
-    required this.isWatchlist,
+    this.isWatchlist = false,
   }) : super(key: key);
 
   final Movie movie;

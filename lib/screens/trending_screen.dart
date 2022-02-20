@@ -29,7 +29,7 @@ class _TrendingScreenState extends State<TrendingScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         await getOverviewDetails();
-        Navigator.of(context).pushReplacementNamed('/');
+        setState(() {});
       },
       child: StreamBuilder<QuerySnapshot<FirestoreMovie>>(
         stream: movieDao.getMovies(),

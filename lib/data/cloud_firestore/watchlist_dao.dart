@@ -17,11 +17,7 @@ class WatchlistDao {
   }
 
   Future<void> removeFromWatchlist(Movie movie) async {
-    await reference
-        .doc(movie.documentId)
-        .delete()
-        .then((value) => print("Removed from watchlist: ${movie.documentId}"))
-        .catchError((error) => print("Failed to delete user: $error"));
+    await reference.doc(movie.documentId).delete();
   }
 
   Stream<QuerySnapshot<FirestoreMovie>> getMovies() {

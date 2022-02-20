@@ -36,9 +36,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     final trendingMoviesDao =
         Provider.of<TrendingMoviesDao>(context, listen: false);
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
-    print(movie.titleId);
-    print(movie.documentId);
-    // TODO: Clean Code!
+    // TODO: Clean the code in the future ;]
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -224,7 +222,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     isWatchlist: isWatchlist,
                                   );
                                 } else {
-                                  return Container();
+                                  return AddWatchlistButton(
+                                    movie: movie,
+                                    onPressed: () {},
+                                  );
                                 }
                               },
                             ),

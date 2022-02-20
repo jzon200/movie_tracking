@@ -29,7 +29,7 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         await getOverviewDetails();
-        Navigator.of(context).pushReplacementNamed('/');
+        setState(() {});
       },
       child: StreamBuilder<QuerySnapshot<FirestoreMovie>>(
         stream: movieDao.getMovies(),
@@ -82,7 +82,6 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
 
   Future<void> getOverviewDetails() async {
     final apiTopMovies = await HttpService().getTopMovies();
-    print(apiTopMovies);
     final didNotChange = await moviesDidNotChange(apiTopMovies);
     if (didNotChange) {
       return;

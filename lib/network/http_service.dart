@@ -10,7 +10,6 @@ const String apiHost = 'imdb8.p.rapidapi.com';
 
 class HttpService {
   Future getData(Uri uri) async {
-    print('Calling uri: $uri');
     final response = await http.get(
       uri,
       headers: {
@@ -22,7 +21,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      print(response.statusCode);
+      return;
     }
   }
 
@@ -35,7 +34,6 @@ class HttpService {
     });
     final data = await getData(uri);
     final responseBody = jsonDecode(data);
-    print(responseBody);
     return Movie.fromJson(responseBody);
   }
 
