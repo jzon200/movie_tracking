@@ -115,7 +115,7 @@ class WatchlistItem extends StatelessWidget {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('${movie.title} removed!'),
+                content: Text('${movie.title} was removed!'),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.grey[50],
                 shape: RoundedRectangleBorder(
@@ -141,7 +141,6 @@ class WatchlistItem extends StatelessWidget {
             ),
           ),
           child: Container(
-            // height: 160,
             color: const Color(0xFF1B1D26),
             child: Row(
               children: [
@@ -227,6 +226,7 @@ class WatchlistItem extends StatelessWidget {
                                   SizedBox(
                                     height: 20,
                                     child: ListView.separated(
+                                      cacheExtent: 2048,
                                       primary: false,
                                       physics:
                                           const NeverScrollableScrollPhysics(),

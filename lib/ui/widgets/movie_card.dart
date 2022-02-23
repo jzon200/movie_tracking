@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../models/movie.dart';
+import '../../screens/movie_details_screen.dart';
 import '../color.dart';
 import 'background_gradient.dart';
 import 'genre_chip.dart';
@@ -12,18 +13,19 @@ class MovieCard extends StatelessWidget {
   const MovieCard({
     Key? key,
     required this.movie,
-    this.onTap,
   }) : super(key: key);
 
   final Movie movie;
-  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final deviceHeight = deviceSize.height;
     return GestureDetector(
-        onTap: onTap,
+        onTap: () => Navigator.of(context).pushNamed(
+              MovieDetailsScreen.routeName,
+              arguments: movie,
+            ),
         child: CachedNetworkImage(
           imageUrl: movie.imageUrl ?? '',
           placeholder: (context, url) => Container(

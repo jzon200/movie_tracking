@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../models/movie.dart';
-import '../../screens/movie_details_screen.dart';
 import 'movie_card.dart';
 
 class MovieList extends StatelessWidget {
@@ -17,10 +16,6 @@ class MovieList extends StatelessWidget {
         final movie = movies[index];
         return MovieCard(
           movie: movie,
-          onTap: () => Navigator.of(context).pushNamed(
-            MovieDetailsScreen.routeName,
-            arguments: movie,
-          ),
         );
       },
     );

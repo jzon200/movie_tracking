@@ -346,6 +346,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           child: SizedBox(
             height: 70,
             child: ListView.separated(
+              cacheExtent: 1024,
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) => CircleAvatar(
                 foregroundImage: (movie.actorsProfile != null &&

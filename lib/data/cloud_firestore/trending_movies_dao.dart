@@ -17,10 +17,4 @@ class TrendingMoviesDao {
   Stream<QuerySnapshot<FirestoreMovie>> getMovies() {
     return reference.orderBy('dateAdded').snapshots();
   }
-
-  // Future<void> addMovies(List<Movie> movies) async {
-  //   for (var movie in movies) {
-  //     await reference.doc(movie.documentId).set(movie.toFirestore());
-  //   }
-  // }
 }

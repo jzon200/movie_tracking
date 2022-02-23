@@ -10,6 +10,7 @@ const String apiHost = 'imdb8.p.rapidapi.com';
 
 class HttpService {
   Future getData(Uri uri) async {
+    // print('Calling uri: $uri');
     final response = await http.get(
       uri,
       headers: {
@@ -34,6 +35,7 @@ class HttpService {
     });
     final data = await getData(uri);
     final responseBody = jsonDecode(data);
+    // print(responseBody);
     return Movie.fromJson(responseBody);
   }
 
@@ -46,6 +48,7 @@ class HttpService {
     });
     final data = await getData(uri);
     final parsedMovies = jsonDecode(data);
+    // print(parsedMovies);
     return parsedMovies
         .take(10)
         .map<String>((titleId) => titleId.toString())
@@ -57,6 +60,7 @@ class HttpService {
     final uri = Uri.https(apiHost, path);
     final data = await getData(uri);
     final parsedMovies = jsonDecode(data);
+    // print(parsedMovies);
     return parsedMovies
         .map<String>((json) => json['id'].toString())
         .take(10)
@@ -87,7 +91,6 @@ class HttpService {
     return (parsedBio['image'] == null)
         ? null
         : (parsedBio['image']['url'] as String?);
-    // return parsedMovies;
   }
 
   Future<List<String?>> getActorsProfile({required String tconst}) async {

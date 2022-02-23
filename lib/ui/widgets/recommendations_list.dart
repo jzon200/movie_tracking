@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/cloud_firestore/firestore_movie.dart';
-import '../../screens/movie_details_screen.dart';
 import 'movie_card.dart';
 
 class RecommendationsList extends StatelessWidget {
@@ -19,6 +18,7 @@ class RecommendationsList extends StatelessWidget {
           child: SizedBox(
             height: 235,
             child: ListView.separated(
+              cacheExtent: 1024,
               itemCount: items.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, index) {
@@ -28,12 +28,6 @@ class RecommendationsList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6.4),
                   child: MovieCard(
                     movie: movie,
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        MovieDetailsScreen.routeName,
-                        arguments: movie,
-                      );
-                    },
                   ),
                 );
               },

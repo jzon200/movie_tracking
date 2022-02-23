@@ -8,7 +8,6 @@ import '../data/cloud_firestore/top_movies_dao.dart';
 import '../network/http_service.dart';
 import '../ui/widgets/loading_widget.dart';
 import '../ui/widgets/movie_card.dart';
-import 'movie_details_screen.dart';
 
 class TopRatedScreen extends StatefulWidget {
   const TopRatedScreen({Key? key}) : super(key: key);
@@ -52,16 +51,13 @@ class _TopRatedScreenState extends State<TopRatedScreen> {
           }
 
           return ListView.builder(
+            cacheExtent: 2048,
             itemCount: data.size,
             itemBuilder: (context, index) {
               final movie = data.docs[index].data().toMovie();
               movie.documentId = data.docs[index].reference.id;
               return MovieCard(
                 movie: movie,
-                onTap: () => Navigator.of(context).pushNamed(
-                  MovieDetailsScreen.routeName,
-                  arguments: movie,
-                ),
               );
             },
           );
